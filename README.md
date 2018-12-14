@@ -22,6 +22,11 @@ As well you can `make clean` at both root, or specific sample directory to clean
 
 This project is based on the work of Lazyfoo. See _License_ section for more information about rights to use code in this project.
 
+# Credits
+
+* Minecraft font by Craftron Gaming on dafont.com - [link](https://www.dafont.com/minecraft.font)
+* 8bit Wonder font by Joiro Hatgaya on dafont.com - [link](https://www.dafont.com/8bit-wonder.font)
+
 # License
 
 * As stated in http://lazyfoo.net/contact.php, the rights of this derived works (code and assets) still belong to Lazyfoo otherwise noted. [LGPL](https://www.gnu.org/copyleft/lesser.html), LazyFoo, original author this repository based on.
