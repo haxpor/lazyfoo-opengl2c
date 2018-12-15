@@ -56,17 +56,6 @@ char fpsText[FPS_BUFFER];
 // content's rect to clear color in render loop
 SDL_Rect content_rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
-// shader loading utility programs
-void printProgramLog(GLuint program);
-void printShaderLog(GLuint shader);
-
-// graphics program
-GLuint g_programid = 0;
-GLint g_vertex_pos2d_location = -1;
-GLuint g_vbo = 0;
-GLuint g_ibo = 0;
-GLuint g_vao = 0;
-
 bool init() {
   // initialize sdl
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
