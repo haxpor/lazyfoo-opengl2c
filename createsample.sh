@@ -17,7 +17,8 @@ MAIN_SRC=$2
 mkdir $SAMPLE_DIR
 
 # copy all files from sample based to kickstart
-cp -p $SAMPLE_BASED/* $SAMPLE_DIR/
+# not to copy any hidden files of this directory, but copy both files and directories inside
+cp -a $SAMPLE_BASED/* $SAMPLE_DIR/
 # clean the destination sample dir
 cd $SAMPLE_DIR && make clean && cd ..
 
@@ -27,7 +28,13 @@ cp -p template.gitignore $SAMPLE_DIR/.gitignore
 cp -p template.c $SAMPLE_DIR/$MAIN_SRC.c
 
 # get PROGRAM file name of sample based
-PROGRAM=$(awk -F'=' '$1 == "PROGRAM" {print $2}' $SAMPLE_DIR/Makefile)
+BASED_PROGRAM=$(awk -F'=' '$1 == "PROGRAM" {print $2}' $SAMPLE_DIR/Makefile)
+
+# modify destination Makefile's PROGRAM and OUTPUT to be correct name
+# change entire line matching the desire text to value that suitable for project to be created
+# note: use gnu sed as macOS version will create backup file for us without a way to disable.
+gsed -i "1s/PROGRAM\=.*/PROGRAM\=$MAIN_SRC/" $SAMPLE_DIR/Makefile
+gsed -i "2s/OUTPUT\=.*/OUTPUT\=$MAIN_SRC/" $SAMPLE_DIR/Makefile
 
 # shout out hint to decide whether to remove existing main source from sample based dir, or completely use content from template.c
-echo ":: Now decide whether to use '$MAIN_SRC.c' or existing one '$PROGRAM.c'."
+echo ":: Now decide whether to use '$MAIN_SRC.c' or existing one '$BASED_PROGRAM.c'."
