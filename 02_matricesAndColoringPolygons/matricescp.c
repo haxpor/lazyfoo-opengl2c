@@ -1,5 +1,5 @@
 /**
- * 02 - Hello OpenGL : Your First Polygon
+ * 02 - Matrices and Coloring Polygons
  */
 
 
@@ -70,7 +70,7 @@ bool init() {
   // create window
   // if we set SDL_WINDOW_OPENGL flag then renderer won't be created for this window
   // thus make sure you cannot use LTexture anymore as it heavilty use renderer as created in LWindow
-  gWindow = LWindow_new("02 - Hello OpenGL : Your First Polygon", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL, 0);
+  gWindow = LWindow_new("02 - Matrices and Coloring Polygons", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL, 0);
   if (gWindow == NULL) {
     SDL_Log("Window could not be created! SDL_Error: %s", SDL_GetError());
     return false;
