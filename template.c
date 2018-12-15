@@ -1,14 +1,20 @@
 /**
- * Template for source file
+ * Template Main Source File
  */
 
-#include "SDL.h"
+
 #include <stdio.h>
 #include <stdbool.h>
-#include "common.h"
-#include "LWindow.h"
-#include "LTexture.h"
-#include "LTimer.h"
+#include <string.h>
+
+#include "SDL.h"
+#include "foundation/common.h"
+#include "foundation/LTimer.h"
+#include "foundation/LTexture.h"
+#include "foundation/LWindow.h"
+#include "gl/glLOpenGL.h"
+
+#include "usercode.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -32,6 +38,9 @@ void update(float deltaTime);
 void render(float deltaTime);
 void close();
 
+// opengl context
+SDL_GLContext opengl_context;
+
 // -- variables
 bool quit = false;
 
@@ -54,17 +63,51 @@ bool init() {
     return false;
   }
 
+  // use opengl 2.1
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
   // create window
-  gWindow = LWindow_new("SDL Tutorial", SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
+  // if we set SDL_WINDOW_OPENGL flag then renderer won't be created for this window
+  // thus make sure you cannot use LTexture anymore as it heavilty use renderer as created in LWindow
+  gWindow = LWindow_new("02 - Hello OpenGL : Your First Polygon", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL, 0);
   if (gWindow == NULL) {
     SDL_Log("Window could not be created! SDL_Error: %s", SDL_GetError());
     return false;
   }
-  // set device indepenent resolution for rendering (so no unproper aspect ratio)
-  if (SDL_RenderSetLogicalSize(gWindow->renderer, SCREEN_WIDTH, SCREEN_HEIGHT) < 0)
+
+  // create opengl context
+  opengl_context = SDL_GL_CreateContext(gWindow->window);
+  if (opengl_context == NULL)
   {
-    SDL_Log("Warning: failed to set logical size of window");
+    SDL_Log("OpenGL context could not be created: %s", SDL_GetError());
+    return false;
   }
+
+  // use vsync
+  if (SDL_GL_SetSwapInterval(1) != 0)
+  {
+    SDL_Log("Warning: Unable to enable vsync! %s", SDL_GetError());
+  }
+
+  // init glew
+  glewExperimental = GL_TRUE;
+  GLenum glewError = glewInit();
+  if (glewError != GLEW_OK)
+  {
+    SDL_Log("Failed initialize glew! %s", glewGetErrorString(glewError));
+    return false;
+  }
+
+  // relay call to user's code in separate file
+  if (!usercode_init(SCREEN_WIDTH, SCREEN_HEIGHT))
+  {
+    SDL_Log("Failed to initialize user's code initializing function");
+    return false;
+  }
+
+  // check opengl version we got
+  printf("OpenGL version %s\nGLSL version: %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
   // initialize png loading
   // see https://www.libsdl.org/projects/SDL_image/docs/SDL_image.html#SEC8
@@ -136,43 +179,33 @@ void handleEvent(SDL_Event *e, float deltaTime)
       gWindow->is_minimized = false;
     }
   }
+  else
+  {
+    // relay call to user's code in separate file
+    usercode_handle_event(e, deltaTime);
+  }
 }
 
 void update(float deltaTime)
 {
-
+  // relay call to user's code in separate file
+  usercode_update(deltaTime);
 }
 
 void render(float deltaTime)
 {
   if (!gWindow->is_minimized)
   {
-    // clear screen (bg)
-    SDL_SetRenderDrawColor(gWindow->renderer, 0, 0, 0, 0xff);
-    SDL_RenderClear(gWindow->renderer);
-
-    // clear screen (content)
-    SDL_SetRenderDrawColor(gWindow->renderer, 0xff, 0xff, 0xff, 0xff);
-    SDL_RenderFillRect(gWindow->renderer, &content_rect);
-
-#ifndef DISABLE_FPS_CALC
-    // render fps on the top right corner
-    snprintf(fpsText, FPS_BUFFER-1, "%d", (int)common_avgFPS);
-
-    // generate fps texture
-    SDL_Color color = {30, 30, 30, 255};
-    LTexture *fpsTexture = LTexture_LoadFromRenderedText(fpsText, color, 0);
-    if (fpsTexture != NULL)
-    {
-      LTexture_Render(fpsTexture, SCREEN_WIDTH - fpsTexture->width - 5, 10);
-      LTexture_Free(fpsTexture);
-    }
-#endif
+    // relay call to user's code in separate file
+    usercode_render();
   }
 }
 
 void close()
 {
+  // relay call to user's code in separate file
+  usercode_close();
+
   // free font
   if (gFont != NULL)
   {
@@ -255,9 +288,8 @@ int main(int argc, char* args[])
           render(0); 
         }
 
-        // update screen from any rendering performed since this previous call
-        // as we don't use SDL_Surface now, we can't use SDL_UpdateWindowSurface
-        SDL_RenderPresent(gWindow->renderer);
+        // update screen
+        SDL_GL_SwapWindow(gWindow->window);
       }
     }
   }
