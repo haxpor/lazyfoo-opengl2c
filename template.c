@@ -70,11 +70,13 @@ bool init() {
   // create window
   // if we set SDL_WINDOW_OPENGL flag then renderer won't be created for this window
   // thus make sure you cannot use LTexture anymore as it heavilty use renderer as created in LWindow
-  gWindow = LWindow_new("02 - Hello OpenGL : Your First Polygon", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL, 0);
+  gWindow = LWindow_new("SDL2 + Opengl", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL, 0);
   if (gWindow == NULL) {
     SDL_Log("Window could not be created! SDL_Error: %s", SDL_GetError());
     return false;
   }
+	// listen to window's resize event
+	gWindow->on_window_resize = usercode_set_screen_dimension;
 
   // create opengl context
   opengl_context = SDL_GL_CreateContext(gWindow->window);
@@ -160,24 +162,15 @@ void handleEvent(SDL_Event *e, float deltaTime)
   // toggle fullscreen via enter key
   else if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
   {
-    if (gWindow->_fullscreen)
-    {
-      // 0 for windowed mode
-      SDL_SetWindowFullscreen(gWindow->window, 0);
-      gWindow->_fullscreen = false;
-    }
-    else
-    {
-      // SDL_WINDOW_FULLSCREEN_DESKTOP for "fake" fullscreen without changing videomode
-      // depends on type of game, and performance aim i.e. FPS game might want to do "real" fullscreen
-      // by changing videomode to get performance gain, but point and click with top-down tile-based
-      // might not need to change videomode to match the desire spec.
-      //
-      // as well this needs to work with SDL_RenderSetLogicalSize() function to make it works.
-      SDL_SetWindowFullscreen(gWindow->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-      gWindow->_fullscreen = true;
-      gWindow->is_minimized = false;
-    }
+		// go windowed mode, currently in fullscreen mode
+		if (gWindow->fullscreen)
+		{
+			LWindow_set_fullscreen(gWindow, true);
+		}
+		else
+		{
+			LWindow_set_fullscreen(gWindow, false);
+		}
   }
   else
   {
