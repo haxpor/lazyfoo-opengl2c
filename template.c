@@ -165,11 +165,11 @@ void handleEvent(SDL_Event *e, float deltaTime)
 		// go windowed mode, currently in fullscreen mode
 		if (gWindow->fullscreen)
 		{
-			LWindow_set_fullscreen(gWindow, true);
+			LWindow_set_fullscreen(gWindow, false);
 		}
 		else
 		{
-			LWindow_set_fullscreen(gWindow, false);
+			LWindow_set_fullscreen(gWindow, true);
 		}
   }
   else
