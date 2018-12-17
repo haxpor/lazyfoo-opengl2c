@@ -161,19 +161,6 @@ void handleEvent(SDL_Event *e, float deltaTime)
   {
     quit = true;
   }
-  // toggle fullscreen via enter key
-  else if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
-  {
-		// go windowed mode, currently in fullscreen mode
-		if (gWindow->fullscreen)
-		{
-			LWindow_set_fullscreen(gWindow, false);
-		}
-		else
-		{
-			LWindow_set_fullscreen(gWindow, true);
-		}
-  }
   else
   {
     // relay call to user's code in separate file
