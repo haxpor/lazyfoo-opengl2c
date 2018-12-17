@@ -16,13 +16,19 @@ void gl_util_adapt_to_letterbox(int screen_width, int screen_height, int logical
 	// FIXME: Prioritize based on height first to have border on the side ...
   // coordinate is different from OpenGL, Y+ is up, and Y- is down; opposite of opengl
 	float aspect = logical_width * 1.0f / logical_height;
-	int view_width = screen_width;
-	int view_height = screen_width / aspect;
 
-	if (view_height > screen_height)
+	// prioritize base on height of screen's height first
+	int view_height = screen_height;
+	int view_width = screen_height * aspect;
+
+	// if view's width needs more space to show all game content and cannot fit
+	// into current screen's width then we need to do another approach to base
+	// on width instead
+	// note: less likely to happen as most game would letterbox on the horizontal side not on vertical side
+	if (view_width > screen_width)
 	{
-		view_height = screen_height;
-		view_width = screen_height * aspect;
+		view_width = screen_width;
+		view_height = screen_width / aspect;
 	}
 
 	int viewport_x = (screen_width - view_width) / 2;
