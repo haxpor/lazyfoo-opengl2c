@@ -20,7 +20,10 @@ static float g_ri_scale_y = 1.0f;
 static int g_ri_view_width;
 static int g_ri_view_height;
 
+static bool g_need_clipping = false;
+
 // -- section of variables for maintaining aspect ratio -- //
+
 
 bool usercode_init(int screen_width, int screen_height, int logical_width, int logical_height)
 {
@@ -39,7 +42,7 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
 
   // initialize the viewport
   // define the area where to render, for now full screen
-  glViewport(0.f, 0.f, g_screen_width, g_screen_height);
+  glViewport(0, 0, g_screen_width, g_screen_height);
 
   // initialize projection matrix
   glMatrixMode(GL_PROJECTION);
@@ -92,6 +95,9 @@ void usercode_handle_event(SDL_Event *e, float delta_time)
         g_ri_scale_y = 1.0f;
         g_ri_view_width = g_screen_width;
         g_ri_view_height = g_screen_height;
+        g_need_clipping = false;
+        // set viewport
+        glViewport(0, 0, g_screen_width, g_screen_height);
       }
       else
       {
@@ -104,6 +110,9 @@ void usercode_handle_event(SDL_Event *e, float delta_time)
         // calculate scale 
         g_ri_scale_x = g_ri_view_width * 1.0f / g_logical_width;
         g_ri_scale_y = g_ri_view_height * 1.0f / g_logical_height;
+        g_need_clipping = true;
+        // set viewport
+        glViewport(g_offset_x, g_offset_y, g_ri_view_width, g_ri_view_height);
       }
     }
   }
@@ -117,8 +126,21 @@ void usercode_update(float delta_time)
 void usercode_render()
 {
   // clear color buffer
-  glClearColor(0.f, 0.f, 0.f, 1.f);
+  if (g_need_clipping)
+    glClearColor(0.f, 0.f, 0.f, 1.f);
+  else
+    glClearColor(1.f, 1.f, 1.f, 1.f);
   glClear(GL_COLOR_BUFFER_BIT);
+
+  // now clip content to be drawn only on content area (if needed)
+  if (g_need_clipping)
+  {
+    // clear color for content area
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(g_offset_x, g_offset_y, g_ri_view_width, g_ri_view_height);
+    glClearColor(1.f, 1.f, 1.f, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+  }
 
   // we will work on modelview matrix
   glMatrixMode(GL_MODELVIEW);
@@ -138,7 +160,14 @@ void usercode_render()
 
   // note: set viewport via glViewport accordingly, you should start at g_offset_x, and g_offset_y
   // note2: glViewport coordinate still in world coordinate, but for individual object (vertices) to be drawn, it's local coordinate
-  //
+
+  // TODO: render code goes here...
+
+  // disable scissor (if needed)
+  if (g_need_clipping)
+  {
+    glDisable(GL_SCISSOR_TEST);
+  }
 }
 
 void usercode_close()
