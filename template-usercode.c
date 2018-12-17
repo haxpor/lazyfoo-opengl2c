@@ -51,7 +51,7 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   glLoadIdentity();
 
   // initialize clear color
-  glClearColor(0.f, 1.f, 1.f, 1.f);
+  glClearColor(0.f, 0.f, 0.f, 1.f);
 
   // check for errors
   GLenum error = glGetError();
@@ -117,6 +117,7 @@ void usercode_update(float delta_time)
 void usercode_render()
 {
   // clear color buffer
+  glClearColor(0.f, 0.f, 0.f, 1.f);
   glClear(GL_COLOR_BUFFER_BIT);
 
   // we will work on modelview matrix
@@ -128,8 +129,16 @@ void usercode_render()
   // set scale
   glScalef(g_ri_scale_x, g_ri_scale_y, 1.0f);
 
+  // clear color for content area
+  glEnable(GL_SCISSOR_TEST);
+  glScissor(g_offset_x, g_offset_y, g_ri_view_width, g_ri_view_height);
+  glClearColor(1.f, 1.f, 1.f, 1.f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glDisable(GL_SCISSOR_TEST);
+
   // note: set viewport via glViewport accordingly, you should start at g_offset_x, and g_offset_y
   // note2: glViewport coordinate still in world coordinate, but for individual object (vertices) to be drawn, it's local coordinate
+  //
 }
 
 void usercode_close()
