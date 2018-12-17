@@ -4,4 +4,4 @@
 * Modified `LWindow` to expose ability to set fullscreen / windowed mode of window with coordinate changed to newer resolution (for now)
 * Took into account multi-resolution whenever program runs on fullscreen mode (press Enter to toggle). It will apply letterbox appropriately which in this case it letterboxes on the side (horizontal).
 * Algorithm for letterbox can be seenin `gl/gl_util.c` inside `gl_util_adapt_to_letterbox()`.
-
+* Clear color of background and content area (in case of wide-screen or different resolution). Set to clear color for content area as cyan, and background (non content area) as black.
