@@ -26,6 +26,10 @@ cd $SAMPLE_DIR && make clean && cd ..
 cp -p template.gitignore $SAMPLE_DIR/.gitignore
 # copy main source file
 cp -p template.c $SAMPLE_DIR/$MAIN_SRC.c
+# copy usercode.c (overwrite destination)
+cp -p template-usercode.c $SAMPLE_DIR/usercode.c
+# copy usercode.h (overwirte destination)
+cp -p template-usercode.h $SAMPLE_DIR/usercode.h
 
 # get PROGRAM file name of sample based
 BASED_PROGRAM=$(awk -F'=' '$1 == "PROGRAM" {print $2}' $SAMPLE_DIR/Makefile)
