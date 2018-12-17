@@ -250,20 +250,39 @@ void usercode_render()
   // note: check for distortion of object here when enter fullscreen (it's correct now!)
   else if (g_viewport_mode == VIEWPORT_MODE_RADAR)
   {
+    const float size1 = 80.0f;
+    const float size2 = 40.0f;
+
     // full size quad
     glViewport(g_offset_x, 0.0f, g_ri_view_width, g_ri_view_height);
     glBegin(GL_QUADS);
       glColor3f(1.f, 1.f, 1.f);
-      glVertex2f(-40, -40);
-      glVertex2f(40 , -40);
-      glVertex2f(40 , 40);
-      glVertex2f(-40 , 40);
+      glVertex2f(-size1, -size1);
+      glVertex2f(size1, -size1);
+      glVertex2f(size1, size1);
+      glVertex2f(-size1, size1);
 
       glColor3f(0.f, 0.f, 0.f);
-      glVertex2f(-20 , -20);
-      glVertex2f(20 , -20);
-      glVertex2f(20 , 20);
-      glVertex2f(-20 , 20);
+      glVertex2f(-size2, -size2);
+      glVertex2f(size2, -size2);
+      glVertex2f(size2, size2);
+      glVertex2f(-size2, size2);
+    glEnd();
+
+    // radar quad
+    glViewport(g_offset_x + g_ri_view_width / 2.f, g_ri_view_height / 2.f, g_ri_view_width / 2.f, g_ri_view_height / 2.f);
+    glBegin(GL_QUADS);
+      glColor3f(1.f, 1.f, 1.f);
+      glVertex2f(-size1, -size1);
+      glVertex2f(size1, -size1);
+      glVertex2f(size1, size1);
+      glVertex2f(-size1, size1);
+
+      glColor3f(0.f, 0.f, 0.f);
+      glVertex2f(-size2, -size2);
+      glVertex2f(size2, -size2);
+      glVertex2f(size2, size2);
+      glVertex2f(-size2, size2);
     glEnd();
   }
 }
