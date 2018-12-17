@@ -13,7 +13,6 @@ void gl_util_adapt_to_normal(int screen_width, int screen_height)
 
 void gl_util_adapt_to_letterbox(int screen_width, int screen_height, int logical_width, int logical_height, int* result_view_width, int* result_view_height, int* offset_x, int* offset_y)
 {
-	// FIXME: Prioritize based on height first to have border on the side ...
   // coordinate is different from OpenGL, Y+ is up, and Y- is down; opposite of opengl
 	float aspect = logical_width * 1.0f / logical_height;
 
