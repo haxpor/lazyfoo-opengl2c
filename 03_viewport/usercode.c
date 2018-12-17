@@ -54,7 +54,7 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   glLoadIdentity();
 
   // initialize clear color
-  glClearColor(0.f, 1.f, 1.f, 1.f);
+  glClearColor(0.f, 0.f, 0.f, 1.f);
 
   // check for errors
   GLenum error = glGetError();
@@ -137,6 +137,7 @@ void usercode_update(float delta_time)
 void usercode_render()
 {
   // clear color buffer
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
   // we will work on modelview matrix
@@ -148,6 +149,13 @@ void usercode_render()
   glTranslatef(g_ri_view_width / 2.f, g_ri_view_height / 2.f, 0.f);
   // set scale
   glScalef(g_ri_scale_x, g_ri_scale_y, 1.0f);
+
+  // clear color for content area
+  glEnable(GL_SCISSOR_TEST);
+  glScissor(g_offset_x, g_offset_y, g_ri_view_width, g_ri_view_height);
+  glClearColor(0.f, 1.f, 1.f, 1.f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glDisable(GL_SCISSOR_TEST);
 
   // full view
   // note: no need to check for distortion of object here as its size depend on current screen resolution
