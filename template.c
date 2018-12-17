@@ -18,6 +18,8 @@
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
+#define LOGICAL_WIDTH 640
+#define LOGICAL_HEIGHT 480
 #define SETFRAME(var, arg1, arg2, arg3, arg4)		\
   do {										\
     var.x = arg1;							\
@@ -102,7 +104,7 @@ bool init() {
   }
 
   // relay call to user's code in separate file
-  if (!usercode_init(SCREEN_WIDTH, SCREEN_HEIGHT))
+  if (!usercode_init(SCREEN_WIDTH, SCREEN_HEIGHT, LOGICAL_WIDTH, LOGICAL_HEIGHT))
   {
     SDL_Log("Failed to initialize user's code initializing function");
     return false;
