@@ -2,6 +2,7 @@
 #include "foundation/common.h"
 #include "foundation/LWindow.h"
 #include "gl/gl_util.h"
+#include "gl/gl_LTexture.h"
 
 // -- section of variables for maintaining aspect ratio -- //
 static int g_screen_width;
