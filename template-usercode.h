@@ -22,6 +22,13 @@
 extern bool usercode_init(int screen_width, int screen_height, int logical_width, int logical_height);
 
 ///
+/// Load media
+///
+/// \return True if loading is successful, otherwise return false.
+///
+extern bool usercode_loadmedia();
+
+///
 /// Set screen's dimensions.
 ///
 /// \param window_id Window id that wants to change screen's dimensions (unused for now)

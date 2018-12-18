@@ -67,6 +67,12 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   return true;
 }
 
+bool usercode_loadmedia()
+{
+  // TODO: Load media here...
+  return true;
+}
+
 void usercode_set_screen_dimension(Uint32 window_id, int screen_width, int screen_height)
 {
   g_screen_width = screen_width;
@@ -146,17 +152,10 @@ void usercode_render()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  // move to center of the screen
+  // move to center of the screen (may not needed in certain app)
   glTranslatef(g_ri_view_width / 2.f, g_ri_view_height / 2.f, 0.f);
   // set scale
   glScalef(g_ri_scale_x, g_ri_scale_y, 1.0f);
-
-  // clear color for content area
-  glEnable(GL_SCISSOR_TEST);
-  glScissor(g_offset_x, g_offset_y, g_ri_view_width, g_ri_view_height);
-  glClearColor(1.f, 1.f, 1.f, 1.f);
-  glClear(GL_COLOR_BUFFER_BIT);
-  glDisable(GL_SCISSOR_TEST);
 
   // note: set viewport via glViewport accordingly, you should start at g_offset_x, and g_offset_y
   // note2: glViewport coordinate still in world coordinate, but for individual object (vertices) to be drawn, it's local coordinate

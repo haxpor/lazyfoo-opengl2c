@@ -150,6 +150,13 @@ bool setup()
     return false;
   }
 
+  // load media from usercode
+  if (!usercode_loadmedia())
+  {
+    SDL_Log("Failed to load media from usercode");
+    return false;
+  }
+
   return true;
 }
 
