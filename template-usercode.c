@@ -57,6 +57,9 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   // initialize clear color
   glClearColor(0.f, 0.f, 0.f, 1.f);
 
+  // enable texturing
+  glEnable(GL_TEXTURE_2D);
+
   // check for errors
   GLenum error = glGetError();
   if (error != GL_NO_ERROR)
