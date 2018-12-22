@@ -81,7 +81,7 @@ bool usercode_loadmedia()
   // TODO: Load media here...
   // dxt5 (with mipmaps)
   dds_dxt5_texture = gl_LTexture_new();
-  if (!gl_LTexture_load_dds_texture_from_file(dds_dxt5_texture, "zombie-test.dds"))
+  if (!gl_LTexture_load_dds_texture_from_file(dds_dxt5_texture, "zombie-512-dxt5.dds"))
   {
     SDL_Log("Unable to load dds texture");
     return false;
