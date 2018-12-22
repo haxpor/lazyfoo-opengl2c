@@ -10,6 +10,8 @@ So more recent sample directory has more complete or per say latest source of su
 
 At the end I might combine all those reuseable system spanning in multiple source files together.
 
+Directory with name `<number><number>_extra_...` is the extra additional on top of the same topic of tutorial.
+
 # How to build
 
 Execute `make` at the root directory to build all samples.
