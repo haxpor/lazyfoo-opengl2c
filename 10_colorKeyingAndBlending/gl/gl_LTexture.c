@@ -1,5 +1,6 @@
 #include "gl_LTexture.h"
 #include "foundation/krr_math.h"
+#include "gl/gl_util.h"
 #include "SDL_log.h"
 #include "SDL_image.h"
 #include <stdio.h>
@@ -173,7 +174,7 @@ bool gl_LTexture_load_texture_from_file(gl_LTexture* texture, const char* path)
   return true;
 }
 
-bool gl_LTexture_load_texture_from_fileex(gl_LTexture* texture, const char* path, GLuint color_key)
+bool gl_LTexture_load_texture_from_file_ex(gl_LTexture* texture, const char* path, GLuint color_key)
 {
   // get pixels from file
   if (!load_pixels_from_file(texture, path))
@@ -436,7 +437,7 @@ bool gl_LTexture_load_dds_texture_from_file(gl_LTexture* texture, const char* pa
   GLenum error = glGetError();
   if (error != GL_NO_ERROR)
   {
-    SDL_Log("Error loading compressed texture %s", gluErrorString(error));
+    SDL_Log("Error loading compressed texture %s", gl_util_error_string(error));
     return false;
   }
 
@@ -561,7 +562,7 @@ bool gl_LTexture_load_texture_from_pixels32(gl_LTexture* texture, GLuint* pixels
   GLenum error = glGetError();
   if (error != GL_NO_ERROR)
   {
-    SDL_Log("Error loading texture from %p pixels! %s", pixels, gluErrorString(error));
+    SDL_Log("Error loading texture from %p pixels! %s", pixels, gl_util_error_string(error));
     return false;
   }
 
@@ -844,7 +845,7 @@ bool load_texture_from_precreated_pixels32(gl_LTexture* texture)
     GLenum error = glGetError();
     if (error != GL_NO_ERROR)
     {
-      SDL_Log("Error loading texture from pixels [%p]: %s", texture->pixels, gluErrorString(error));
+      SDL_Log("Error loading texture from pixels [%p]: %s", texture->pixels, gl_util_error_string(error));
       return false;
     }
     else

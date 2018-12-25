@@ -67,7 +67,7 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   GLenum error = glGetError();
   if (error != GL_NO_ERROR)
   {
-    SDL_Log("Error initializing OpenGL! %s", gluErrorString(error));
+    SDL_Log("Error initializing OpenGL! %s", gl_util_error_string(error));
     return false;
   }
 
@@ -78,7 +78,7 @@ bool usercode_loadmedia()
 {
   // TODO: Load media here...
   circle_texture = gl_LTexture_new();
-  if (!gl_LTexture_load_texture_from_fileex(circle_texture, "circle.png", 0xFF00FFFF))
+  if (!gl_LTexture_load_texture_from_file_ex(circle_texture, "circle.png", 0xFF00FFFF))
   {
     SDL_Log("Unable to load texture");
     return false;

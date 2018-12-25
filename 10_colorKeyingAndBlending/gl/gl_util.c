@@ -1,5 +1,4 @@
 #include "gl_util.h"
-#include "glLOpenGL.h"
 #include <stdio.h>
 #include "SDL_log.h"
 
@@ -55,4 +54,28 @@ void gl_util_adapt_to_letterbox(int screen_width, int screen_height, int logical
 	{
 		*offset_y = viewport_y;
 	}
+}
+
+// implementation note: decided to return string literal instead of using global string variable
+// as to reduce management effort in code to clear error message when execute next related command
+const char* gl_util_error_string(GLenum error)
+{
+  if (error == GL_NO_ERROR)
+    return "No error";
+  else if (error == GL_INVALID_ENUM)
+    return "An unacceptable value is specified for an enumerated argument";
+  else if (error == GL_INVALID_VALUE)
+    return "A numeric argument is out of range";
+  else if (error == GL_INVALID_OPERATION)
+    return "The specified operation is not allowed in the current state";
+  else if (error == GL_STACK_OVERFLOW)
+    return "This command would cause a stack overflow";
+  else if (error == GL_STACK_UNDERFLOW)
+    return "This command would cause a stack underflow";
+  else if (error == GL_OUT_OF_MEMORY)
+    return "There is not enough memory left to execute the command";
+  else if (error == GL_TABLE_TOO_LARGE)
+    return " The specified table exceeds the implementation's maximum supported table size";
+  else
+    return "Unknown error"; // should not happen anyway if you get error from glGetError()
 }

@@ -1,6 +1,8 @@
 #ifndef gl_util_h_
 #define gl_util_h_
 
+#include "gl.h"
+
 /// Utility functions to work with OpenGL
 
 ///
@@ -26,5 +28,13 @@ extern void gl_util_adapt_to_normal(int screen_width, int screen_heght);
 /// \param offset_y Offset y on screen for main content ot be rendered. If NULL, value won't get return.
 ///
 extern void gl_util_adapt_to_letterbox(int screen_width, int screen_height, int logical_width, int logical_height, int* view_width, int* view_height, int* offset_x, int* offset_y);
+
+///
+/// Get error string.
+///
+/// \param error GLenum
+/// \return Error string. You should not modify or free this string.
+///
+extern const char* gl_util_error_string(GLenum error);
 
 #endif

@@ -5,7 +5,9 @@ CC = gcc
 EXE = .out
 FDIR = foundation
 GLDIR = gl
-override CFLAGS += -std=c99 -Wall -I. -I/usr/local/include/SDL2 -I/Volumes/Slave/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/usr/local/include/GL
+# use -DGL_SILENCE_DEPRECATION to silence deprecation warnings as we know we use older version of opengl
+# you might want to remove it
+override CFLAGS += -std=c99 -Wall -I. -I/usr/local/include/SDL2 -I/Volumes/Slave/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/usr/local/include/GL -DGL_SILENCE_DEPRECATION
 override LIBS += -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -framework OpenGL -lGLEW
 TARGETS = \
 	  $(FDIR)/common.o \

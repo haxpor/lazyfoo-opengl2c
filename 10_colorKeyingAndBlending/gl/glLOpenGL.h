@@ -3,6 +3,5 @@
 
 #include "glew.h"
 #include "gl.h"
-#include "glu.h"
 
 #endif
