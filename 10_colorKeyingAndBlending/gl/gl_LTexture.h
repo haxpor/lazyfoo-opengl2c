@@ -67,7 +67,7 @@ extern bool gl_LTexture_load_texture_from_file(gl_LTexture* texture, const char*
 ///
 /// \param texture Pointer to gl_LTexture
 /// \param path Path to texture file to load
-/// \param color_key Packed color key value in ARGB8. This is a target color to replace it with transparent color in texture.
+/// \param color_key Packed color key value in RGBA. This is a target color to replace it with transparent color in texture.
 /// \return True if load successfully, otherwise return false.
 ///
 extern bool gl_LTexture_load_texture_from_file_ex(gl_LTexture* texture, const char* path, GLuint color_key);

@@ -149,11 +149,11 @@ bool gl_LTexture_load_texture_from_file(gl_LTexture* texture, const char* path)
   SDL_Log("format loaded surface: %s", SDL_GetPixelFormatName(loaded_surface->format->format));
 
   // convert pixel format
-  SDL_Surface* converted_surface = SDL_ConvertSurfaceFormat(loaded_surface, SDL_PIXELFORMAT_ARGB8888, 0);
+  SDL_Surface* converted_surface = SDL_ConvertSurfaceFormat(loaded_surface, SDL_PIXELFORMAT_ABGR8888, 0);
 
   if (converted_surface == NULL)
   {
-    SDL_Log("Cannot convert to ARGB8888 format");
+    SDL_Log("Cannot convert to ABGR8888 format");
     return false;
   }
 
@@ -185,11 +185,15 @@ bool gl_LTexture_load_texture_from_file_ex(gl_LTexture* texture, const char* pat
 
   // go through pixels to swap color as per color_key
   int pixel_count = texture->physical_width_ * texture->physical_height_;
+  // map color key to ABGR format
+  GLubyte* color_key_bytes = (GLubyte*)&color_key;
+  // we get sequence of bytes which ranging from least to most significant so we can use it right away
+  GLuint mapped_color_key = (color_key_bytes[0] << 24) | (color_key_bytes[1] << 16) | (color_key_bytes[2] << 8) | (color_key_bytes[3]);
   for (int i=0; i<pixel_count; i++)
   {
     // get pixel colors
     GLuint pixel = texture->pixels[i];
-    if (pixel == color_key)
+    if (pixel == mapped_color_key)
     {
       // make transparent (fully transparent white color)
       texture->pixels[i] = 0x00FFFFFF;
@@ -693,11 +697,11 @@ bool load_pixels_from_file(gl_LTexture* texture, const char* path)
   SDL_Log("format loaded surface: %s", SDL_GetPixelFormatName(loaded_surface->format->format));
 
   // convert pixel format
-  SDL_Surface* converted_surface = SDL_ConvertSurfaceFormat(loaded_surface, SDL_PIXELFORMAT_ARGB8888, 0);
+  SDL_Surface* converted_surface = SDL_ConvertSurfaceFormat(loaded_surface, SDL_PIXELFORMAT_ABGR8888, 0);
 
   if (converted_surface == NULL)
   {
-    SDL_Log("Cannot convert to ARGB8888 format");
+    SDL_Log("Cannot convert to ABGR8888 format");
     return false;
   }
 

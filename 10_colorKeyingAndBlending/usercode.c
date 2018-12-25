@@ -78,7 +78,7 @@ bool usercode_loadmedia()
 {
   // TODO: Load media here...
   circle_texture = gl_LTexture_new();
-  if (!gl_LTexture_load_texture_from_file_ex(circle_texture, "circle.png", 0xFF00FFFF))
+  if (!gl_LTexture_load_texture_from_file_ex(circle_texture, "circle.png", 0x00FFFFFF))
   {
     SDL_Log("Unable to load texture");
     return false;
