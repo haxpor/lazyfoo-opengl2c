@@ -1,5 +1,5 @@
-PROGRAM=repatingtex
-OUTPUT=repatingtex
+PROGRAM=repeatingtex
+OUTPUT=repeatingtex
 
 CC = gcc
 EXE = .out

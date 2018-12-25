@@ -27,7 +27,7 @@ static bool g_need_clipping = false;
 static gl_LTexture* repeating_texture = NULL;
 static GLfloat tex_x = 0.f;
 static GLfloat tex_y = 0.f;
-static texture_wrap_type = 0;
+static int texture_wrap_type = 0;
 
 bool usercode_init(int screen_width, int screen_height, int logical_width, int logical_height)
 {
@@ -231,8 +231,8 @@ void usercode_render()
   glBegin(GL_QUADS);
     glTexCoord2f(0.f, 0.f);                       glVertex2f(0.f, 0.f);
     glTexCoord2f(texture_right, 0.f);             glVertex2f(g_logical_width, 0.f);
-    glTexCoord2f(texture_right, texture_right);  glVertex2f(g_logical_width, g_logical_height);
-    glTexCoord2f(0.f, texture_right);            glVertex2f(0.f, g_logical_height);
+    glTexCoord2f(texture_right, texture_bottom);  glVertex2f(g_logical_width, g_logical_height);
+    glTexCoord2f(0.f, texture_bottom);            glVertex2f(0.f, g_logical_height);
   glEnd();
 
   // finish our job
