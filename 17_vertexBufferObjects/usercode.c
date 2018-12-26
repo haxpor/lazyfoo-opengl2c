@@ -210,12 +210,13 @@ void usercode_render()
     // set vertex data
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glVertexPointer(2, GL_FLOAT, 0, NULL);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // set index data
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
     // draw it using both vertex and index data
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, NULL);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
   // disable vertex arrays
