@@ -80,7 +80,7 @@ bool gl_LSpritesheet_generate_databuffer(gl_LSpritesheet* spritesheet)
     // yep we can use variable length array declaration in C99
     LVertexData2D vertex_data[total_sprites * 4];
     // allocate buffer for index buffer
-    spritesheet->index_buffers = malloc(4 * sizeof(GLuint));
+    spritesheet->index_buffers = malloc(total_sprites * 4 * sizeof(GLuint));
 
     // allocate vertex data buffer name
     glGenBuffers(1, &spritesheet->vertex_data_buffer);
