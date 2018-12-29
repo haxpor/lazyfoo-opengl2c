@@ -182,7 +182,6 @@ void usercode_render()
   // TODO: render code goes here...
   // render text in red color
   glColor3f(1.f, 0.f, 0.f);
-  glScalef(0.4f, 0.4f, 1.0f);
   gl_LFont_render_text(font_sheet, "The quick brown fox jumps\nover the lazy dog", 0.f, 0.f);
 
   // disable scissor (if needed)

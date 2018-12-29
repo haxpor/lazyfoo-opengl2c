@@ -50,7 +50,7 @@ bool gl_LFont_load_bitmap(gl_LFont* font, const char* path)
 
   // we expect an image that has only black, white and shades of gray
   // it can be grayscale image in PNG file format
-  const GLuint black_pixel = 0x000000FF;
+  const GLuint black_pixel = 0xFF000000;
 
   // get rid of the font if it exists
   gl_LFont_free_font(font);
