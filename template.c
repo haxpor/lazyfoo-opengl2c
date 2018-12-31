@@ -142,6 +142,7 @@ bool init() {
 // include any asset loading sequence, and preparation code here
 bool setup()
 {
+#ifndef DISABLE_SDL_TTF_LIB
   // load font
   gFont = TTF_OpenFont("../Minecraft.ttf", 16);
   if (gFont == NULL)
@@ -149,6 +150,7 @@ bool setup()
     SDL_Log("Failed to load Minecraft.ttf font: %s", TTF_GetError());
     return false;
   }
+#endif
 
   // load media from usercode
   if (!usercode_loadmedia())
@@ -195,12 +197,14 @@ void close()
   // relay call to user's code in separate file
   usercode_close();
 
+#ifndef DISABLE_SDL_TTF_LIB
   // free font
   if (gFont != NULL)
   {
     TTF_CloseFont(gFont);
     gFont = NULL;
   }
+#endif
 
   // destroy window
   LWindow_free(gWindow);
