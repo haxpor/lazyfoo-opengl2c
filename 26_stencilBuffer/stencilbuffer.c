@@ -1,5 +1,5 @@
 /**
- * 25 - The Stencil Buffer
+ * 26 - The Stencil Buffer
  */
 
 
@@ -76,7 +76,7 @@ bool init() {
   // create window
   // if we set SDL_WINDOW_OPENGL flag then renderer won't be created for this window
   // thus make sure you cannot use LTexture anymore as it heavilty use renderer as created in LWindow
-  gWindow = LWindow_new("25 - The Stencil Buffer", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL, 0);
+  gWindow = LWindow_new("26 - The Stencil Buffer", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL, 0);
   if (gWindow == NULL) {
     SDL_Log("Window could not be created! SDL_Error: %s", SDL_GetError());
     return false;
