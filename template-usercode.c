@@ -59,6 +59,9 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
 
   // enable texturing
   glEnable(GL_TEXTURE_2D);
+  // enable blending with default blend function
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   // check for errors
   GLenum error = glGetError();
