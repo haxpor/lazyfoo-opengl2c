@@ -13,6 +13,9 @@
 #include "foundation/LTexture.h"
 #include "foundation/LWindow.h"
 #include "gl/glLOpenGL.h"
+#include "gl/gl_LTexture.h"
+#include "gl/gl_LTexture_spritesheet.h"
+#include "gl/gl_LFont.h"
 
 #include "usercode.h"
 
@@ -53,6 +56,8 @@ Uint32 prevTime = 0;
 #ifndef DISABLE_FPS_CALC
 #define FPS_BUFFER 7+1
 char fpsText[FPS_BUFFER];
+gl_LFont* fps_font = NULL;
+LSize fps_area = {SCREEN_WIDTH, SCREEN_HEIGHT};
 #endif
 
 // content's rect to clear color in render loop
@@ -156,6 +161,21 @@ bool setup()
   }
 #endif
 
+  // load font to render framerate
+#ifndef DISABLE_FPS_CALC
+  {
+  gl_LTexture* raw_texture = gl_LTexture_new();
+  gl_LSpritesheet* spritesheet = gl_LSpritesheet_new(raw_texture);
+
+  fps_font = gl_LFont_new(spritesheet);
+  if (!gl_LFont_load_freetype(fps_font, "../Minecraft.ttf", 14))
+  {
+    SDL_Log("Unable to load font for rendering framerate");
+    return false;
+  }
+  }
+#endif
+
   // load media from usercode
   if (!usercode_loadmedia())
   {
@@ -194,6 +214,16 @@ void render(float deltaTime)
     // relay call to user's code in separate file
     usercode_render();
   }
+
+  // render frame rate on top of everything
+#ifndef DISABLE_FPS_CALC
+  // most likely rendering state is still ok, if you didn't weirdly modify
+  // things before returning in usercode's render function, so we take benefit of it here
+  snprintf(fpsText, FPS_BUFFER-1, "%d", (int)common_avgFPS);
+
+  glColor3f(1.f, 1.f, 1.f);
+  gl_LFont_render_textex(fps_font, fpsText, 0.f, 4.f, &fps_area, gl_LFont_TEXT_ALIGN_RIGHT | gl_LFont_TEXT_ALIGN_TOP);
+#endif
 }
 
 void close()
@@ -208,6 +238,11 @@ void close()
     TTF_CloseFont(gFont);
     gFont = NULL;
   }
+#endif
+
+#ifndef DISABLE_FPS_CALC
+  if (fps_font != NULL)
+    gl_LFont_free(fps_font);
 #endif
 
   // destroy window
