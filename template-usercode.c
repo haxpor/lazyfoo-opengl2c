@@ -159,8 +159,6 @@ void usercode_render()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  // move to center of the screen (may not needed in certain app)
-  glTranslatef(g_ri_view_width / 2.f, g_ri_view_height / 2.f, 0.f);
   // set scale
   glScalef(g_ri_scale_x, g_ri_scale_y, 1.0f);
 
