@@ -30,15 +30,14 @@ TARGETS = \
 	  $(PROGRAM).o \
 	  $(OUTPUT)
 
+# targets for linking (just not include $(OUTPUT)
+TARGETS_LINK = $(filter-out $(OUTPUT),$(TARGETS))
+
 .PHONY: all clean
 
 all: $(TARGETS) 
-
-$(OUTPUT): $(PROGRAM).o \
-	$(FDIR)/LWindow.o \
-	$(FDIR)/LTexture.o \
-	$(FDIR)/common.o \
-	$(FDIR)/krr_math.o $(FDIR)/LTimer.o $(FDIR)/vector.o $(GLDIR)/gl_util.o $(GLDIR)/gl_LTexture.o $(GLDIR)/gl_LSpritesheet.o $(GLDIR)/gl_LFont.o $(GLDIR)/gl_LShaderProgram.o $(GLDIR)/gl_LPlainPolygonProgram2D.o usercode.o
+	
+$(OUTPUT): $(TARGETS_LINK)
 	$(CC) $^ -o $(OUTPUT)$(EXE) $(LIBS)
 
 $(FDIR)/common.o: $(FDIR)/common.c $(FDIR)/common.h
