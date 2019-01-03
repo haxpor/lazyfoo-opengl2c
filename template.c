@@ -280,9 +280,11 @@ int main(int argc, char* args[])
         // calculate per second
         float deltaTime = (currTime - prevTime) / 1000.0f;
 
-#ifndef DISABLE_FPS_CALC
         // fixed step
         common_frameTime += deltaTime;
+
+#ifndef DISABLE_FPS_CALC
+				// update accumulated time for calculating framerate
         common_frameAccumTime += deltaTime;
 #endif
         if (common_frameTime >= FIXED_DELTATIME)
