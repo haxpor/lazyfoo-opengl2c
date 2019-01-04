@@ -51,11 +51,18 @@ bool gl_LPlainPolygonProgram2D_load_program(gl_LPlainPolygonProgram2D* program)
   {
     SDL_Log("Unable to compile vertex shader: %d", vertex_shader);
     gl_LShaderProgram_print_shader_log(vertex_shader);
+
+    // delete shader object
+    glDeleteShader(vertex_shader);
+    vertex_shader = 0;
     return false;
   }
 
   // attach vertex shader to program
   glAttachShader(program->program_id, vertex_shader);
+  // delete shader object
+  glDeleteShader(vertex_shader);
+  vertex_shader = 0;
 
   // create fragment shader
   GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -82,11 +89,18 @@ bool gl_LPlainPolygonProgram2D_load_program(gl_LPlainPolygonProgram2D* program)
   {
     SDL_Log("Unable to compile fragment shader: %d", fragment_shader);
     gl_LShaderProgram_print_shader_log(fragment_shader);
+
+    // delete shader object
+    glDeleteShader(fragment_shader);
+    fragment_shader = 0;
     return false;
   }
 
   // attach fragment shader to program
   glAttachShader(program->program_id, fragment_shader);
+  // delete shader
+  glDeleteShader(fragment_shader);
+  fragment_shader = 0;
 
   // link program
   glLinkProgram(program->program_id);
@@ -98,6 +112,7 @@ bool gl_LPlainPolygonProgram2D_load_program(gl_LPlainPolygonProgram2D* program)
   {
     SDL_Log("Unable to link shader program: %d", program->program_id);
     gl_LShaderProgram_print_program_log(program->program_id);
+
     return false;
   }
 
