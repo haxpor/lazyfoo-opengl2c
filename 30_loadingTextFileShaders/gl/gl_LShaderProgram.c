@@ -3,6 +3,7 @@
 #include "gl/gl_util.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "SDL_log.h"
 
 void gl_LShaderProgram_init_defaults(gl_LShaderProgram* shader_program)
@@ -57,7 +58,8 @@ GLuint gl_LShaderProgram_load_shader_from_file(const char* path, GLenum shader_t
   }
 
   // have enough space to hold file's content
-  char shader_source[file_size];
+  char shader_source[file_size+1];
+  memset(shader_source, 0, file_size+1);
 
   // FIXME: should we fix this to read line-by-line or chunk by chunk in case the limitation of RAM?
   // read the whole file as once
