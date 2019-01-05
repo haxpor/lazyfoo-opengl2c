@@ -56,6 +56,12 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   g_ri_view_width = g_screen_width;
   g_ri_view_height = g_screen_height;
 
+  // calculate orthographic projection matrix
+	glm_ortho(0.0, g_screen_width, g_screen_height, 0.0, -1.0, 1.0, g_projection_matrix);
+	// calculate base modelview matrix (to reduce some of operations cost)
+	glm_mat4_identity(g_base_modelview_matrix);
+	glm_scale(g_base_modelview_matrix, (vec3){ g_ri_scale_x, g_ri_scale_y, 1.f});
+
   // initialize the viewport
   // define the area where to render, for now full screen
   glViewport(0, 0, g_screen_width, g_screen_height);
