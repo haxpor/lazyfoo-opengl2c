@@ -73,7 +73,7 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   GLenum error = glGetError();
   if (error != GL_NO_ERROR)
   {
-    SDL_Log("Error initializing OpenGL! %s", gluErrorString(error));
+    SDL_Log("Error initializing OpenGL! %s", gl_util_error_string(error));
     return false;
   }
 
