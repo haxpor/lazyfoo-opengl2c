@@ -23,23 +23,8 @@ static int g_ri_view_height;
 
 static bool g_need_clipping = false;
 
-static mat4 g_projection_matrix;
-// base modelview matrix to reduce some of mathematics operation initially
-static mat4 g_base_modelview_matrix;
 // -- section of variables for maintaining aspect ratio -- //
 
-// -- section of function signatures -- //
-static void usercode_app_went_windowed_mode();
-static void usercode_app_went_fullscreen();
-// -- end of section of function signatures -- //
-
-void usercode_app_went_windowed_mode()
-{
-}
-
-void usercode_app_went_fullscreen()
-{
-}
 
 bool usercode_init(int screen_width, int screen_height, int logical_width, int logical_height)
 {
@@ -59,6 +44,15 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   // initialize the viewport
   // define the area where to render, for now full screen
   glViewport(0, 0, g_screen_width, g_screen_height);
+
+  // initialize projection matrix
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(0.0, g_screen_width, g_screen_height, 0.0, -1.0, 1.0);
+
+  // initialize modelview matrix
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 
   // initialize clear color
   glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -115,16 +109,8 @@ void usercode_handle_event(SDL_Event *e, float delta_time)
         g_ri_view_width = g_screen_width;
         g_ri_view_height = g_screen_height;
         g_need_clipping = false;
-				
-				// re-calculate orthographic projection matrix
-				glm_ortho(0.0, g_ri_view_width, g_ri_view_height, 0.0, -1.0, 1.0, g_projection_matrix);
-
-				// re-calculate base modelview matrix
-				// no need to scale as it's uniform 1.0 now
-				glm_mat4_identity(g_base_modelview_matrix);
-
-				// signal that app went windowed mode
-				usercode_app_went_windowed_mode();
+        // set viewport
+        glViewport(0, 0, g_screen_width, g_screen_height);
       }
       else
       {
@@ -138,17 +124,8 @@ void usercode_handle_event(SDL_Event *e, float delta_time)
         g_ri_scale_x = g_ri_view_width * 1.0f / g_logical_width;
         g_ri_scale_y = g_ri_view_height * 1.0f / g_logical_height;
         g_need_clipping = true;
-
-				// re-calculate orthographic projection matrix
-				glm_ortho(0.0, g_ri_view_width, g_ri_view_height, 0.0, -1.0, 1.0, g_projection_matrix);
-
-				// re-calculate base modelview matrix
-				glm_mat4_identity(g_base_modelview_matrix);
-				// also scale
-				glm_scale(g_base_modelview_matrix, (vec3){ g_ri_scale_x, g_ri_scale_y, 1.f});
-
-				// signal that app went fullscreen mode
-				usercode_app_went_fullscreen();
+        // set viewport
+        glViewport(g_offset_x, g_offset_y, g_ri_view_width, g_ri_view_height);
       }
     }
   }
@@ -177,6 +154,13 @@ void usercode_render()
     glClearColor(1.f, 1.f, 1.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
   }
+
+  // we will work on modelview matrix
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  // set scale
+  glScalef(g_ri_scale_x, g_ri_scale_y, 1.0f);
 
   // note: set viewport via glViewport accordingly, you should start at g_offset_x, and g_offset_y
   // note2: glViewport coordinate still in world coordinate, but for individual object (vertices) to be drawn, it's local coordinate
