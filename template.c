@@ -69,10 +69,19 @@ bool init() {
     SDL_Log("SDL could not initialize! SDL_Error: %s", SDL_GetError());
     return false;
   }
+  
+  // use core profile of opengl 3.3
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-  // use opengl 2.1
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+  // just to be pragmatic
+  SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+  // following these 3 lines might not be needed
+  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+  SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
   // create window
   // if we set SDL_WINDOW_OPENGL flag then renderer won't be created for this window
@@ -93,6 +102,9 @@ bool init() {
     return false;
   }
 
+  // check opengl version we got
+  printf("OpenGL version %s\nGLSL version: %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
+
   // use vsync
   if (SDL_GL_SetSwapInterval(1) != 0)
   {
@@ -108,15 +120,19 @@ bool init() {
     return false;
   }
 
+  // make sure OpenGL 3.3 is supported
+  if (!GLEW_VERSION_3_3)
+  {
+    SDL_Log("OpenGL 3.3 not supported!");
+    return false;
+  }
+
   // relay call to user's code in separate file
   if (!usercode_init(SCREEN_WIDTH, SCREEN_HEIGHT, LOGICAL_WIDTH, LOGICAL_HEIGHT))
   {
     SDL_Log("Failed to initialize user's code initializing function");
     return false;
   }
-
-  // check opengl version we got
-  printf("OpenGL version %s\nGLSL version: %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
   // initialize png loading
   // see https://www.libsdl.org/projects/SDL_image/docs/SDL_image.html#SEC8

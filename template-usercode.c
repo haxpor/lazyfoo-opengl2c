@@ -4,6 +4,9 @@
 #include "gl/gl_util.h"
 #include "gl/gl_LTexture.h"
 
+// don't use this elsewhere
+#define CONTENT_BG_COLOR 1.f, 0.f, 0.f, 1.f
+
 // -- section of variables for maintaining aspect ratio -- //
 static int g_screen_width;
 static int g_screen_height;
@@ -171,7 +174,7 @@ void usercode_render()
   if (g_need_clipping)
     glClearColor(0.f, 0.f, 0.f, 1.f);
   else
-    glClearColor(1.f, 1.f, 1.f, 1.f);
+    glClearColor(CONTENT_BG_COLOR);
   glClear(GL_COLOR_BUFFER_BIT);
 
   // now clip content to be drawn only on content area (if needed)
@@ -180,7 +183,7 @@ void usercode_render()
     // clear color for content area
     glEnable(GL_SCISSOR_TEST);
     glScissor(g_offset_x, g_offset_y, g_ri_view_width, g_ri_view_height);
-    glClearColor(1.f, 1.f, 1.f, 1.f);
+    glClearColor(CONTENT_BG_COLOR);
     glClear(GL_COLOR_BUFFER_BIT);
   }
 
