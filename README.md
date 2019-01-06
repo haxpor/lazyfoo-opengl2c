@@ -1,6 +1,8 @@
 # lazyfoo-opengl2c
 
-C implementation of OpenGL tutorial (v.2.1 - 3.0)  by Lazyfoo but with SDL2, improvement and added features if possible.
+C implementation of OpenGL tutorial (v.2.1 - 3.3)  by Lazyfoo but with SDL2, improvement and added features if possible.
+
+> Original tutorial is based up to 3.1, but I target 3.3.
 
 # Approach
 
