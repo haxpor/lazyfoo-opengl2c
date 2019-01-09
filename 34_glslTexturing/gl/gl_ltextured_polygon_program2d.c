@@ -148,7 +148,7 @@ void gl_ltextured_polygon_program2d_update_modelview_matrix(gl_ltextured_polygon
 
 void gl_ltextured_polygon_program2d_set_vertex_pointer(gl_ltextured_polygon_program2d* program, GLsizei stride, const GLvoid* data)
 {
-  glVertexAttribPointer(program->vertex_pos2d_location, 4, GL_FLOAT, GL_FALSE, stride, data); 
+  glVertexAttribPointer(program->vertex_pos2d_location, 2, GL_FLOAT, GL_FALSE, stride, data); 
 }
 
 void gl_ltextured_polygon_program2d_set_texcoord_pointer(gl_ltextured_polygon_program2d* program, GLsizei stride, const GLvoid* data)
