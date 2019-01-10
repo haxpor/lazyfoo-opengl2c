@@ -8,10 +8,6 @@
 #include "gl/gl_LFont.h"
 #include "gl/gl_lfont_polygon_program2d.h"
 
-#if defined __APPLE__ || defined __linux__
-#include <execinfo.h>
-#endif
-
 // don't use this elsewhere
 #define CONTENT_BG_COLOR 1.f, 0.f, 0.f, 1.f
 
