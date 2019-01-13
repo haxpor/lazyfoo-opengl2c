@@ -204,6 +204,9 @@ bool usercode_init(int screen_width, int screen_height, int logical_width, int l
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+  glEnable(GL_CULL_FACE);
+  glFrontFace(GL_CW);
+
   // check for errors
   GLenum error = glGetError();
   if (error != GL_NO_ERROR)
